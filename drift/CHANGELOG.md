@@ -1,3 +1,18 @@
+## 2.28.0-dev
+
+- Query delegates: Support nested transactions in `SupportedTransactionDelegate`.
+- Fix drift server isolates leaking when their only client isolate exits without closing the database.
+
+## 2.27.0
+
+- Allow passing `sqlite3` callback to `NativeDatabase` to customize how SQLite
+  bindings are obtained.
+
+## 2.26.1
+
+- Add `isNotNull()` column filter for the manager APIs.
+- Add optional `orderBy` parameter to more aggregate function extension.
+
 ## 2.26.0
 
 - Add support for window functions with `WindowFunctionExpression`.
