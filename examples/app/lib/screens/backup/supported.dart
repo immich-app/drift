@@ -57,7 +57,7 @@ class BackupDialog extends ConsumerWidget {
             final tempDb = p.join(tempPath.path, 'import.db');
             backupDb
               ..execute('VACUUM INTO ?', [tempDb])
-              ..dispose();
+              ..close();
 
             // Then replace the existing database file with it.
             final tempDbFile = File(tempDb);

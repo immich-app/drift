@@ -103,7 +103,7 @@ class SchemaVerifier extends AsyncNotifier<SchemaStatus> {
       }
     }
 
-    newDatabase.dispose();
+    newDatabase.close();
     return inputs;
   }
 }

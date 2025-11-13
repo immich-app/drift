@@ -6,7 +6,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 QueryExecutor openConnection() {
   return LazyDatabase(() async {
@@ -22,11 +21,6 @@ QueryExecutor openConnection() {
       await file.writeAsBytes(
         buffer.asUint8List(blob.offsetInBytes, blob.lengthInBytes),
       );
-    }
-
-    // Also work around limitations on old Android versions
-    if (Platform.isAndroid) {
-      await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
     }
 
     // Make sqlite3 pick a more suitable location for temporary files - the

@@ -12,12 +12,11 @@ environment:
 dependencies:
   drift: ^2.0.0-0
   path: ^1.8.0
-  sqlite3: '>=1.7.2 <3.0.0'
+  sqlite3: ^3.0.0
   flutter:
     sdk: flutter
   drift_testcases:
     path: ../drift_testcases
-  sqlite3_flutter_libs: ^0.5.7
 
 dev_dependencies:
   test: ^1.18.0

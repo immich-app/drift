@@ -83,7 +83,7 @@ abstract class Sqlite3Delegate<DB extends CommonDatabase>
       } catch (e) {
         // If the initialization fails, we effectively don't have a usable
         // database, so reset
-        _database?.dispose();
+        _database?.close();
         _database = null;
 
         // We can call clear instead of disposeAll because disposing the
@@ -132,7 +132,7 @@ abstract class Sqlite3Delegate<DB extends CommonDatabase>
       }
     } finally {
       for (final stmt in prepared) {
-        stmt.dispose();
+        stmt.close();
       }
     }
   }
@@ -190,7 +190,7 @@ abstract class Sqlite3Delegate<DB extends CommonDatabase>
     // When using a statement cache, prepared statements are disposed as they
     // get evicted from the cache, so we don't need to do anything.
     if (!cached) {
-      stmt.dispose();
+      stmt.close();
     }
   }
 }
@@ -254,7 +254,7 @@ class PreparedStatementsCache {
 
     if (_cachedStatements.length == maxSize) {
       final lru = _cachedStatements.remove(_cachedStatements.keys.first)!;
-      lru.dispose();
+      lru.close();
     }
 
     _cachedStatements[sql] = statement;
@@ -263,7 +263,7 @@ class PreparedStatementsCache {
   /// Removes all cached statements.
   void disposeAll() {
     for (final statement in _cachedStatements.values) {
-      statement.dispose();
+      statement.close();
     }
 
     _cachedStatements.clear();

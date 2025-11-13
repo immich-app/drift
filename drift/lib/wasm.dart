@@ -97,7 +97,7 @@ class WasmDatabase extends DelegatedDatabase {
   ///
   /// When the [closeUnderlyingOnClose] argument is set (which is the default),
   /// calling [QueryExecutor.close] on the returned [WasmDatabase] will also
-  /// [CommonDatabase.dispose] the [database] passed to this constructor.
+  /// [CommonDatabase.close] the [database] passed to this constructor.
   ///
   /// Using [WasmDatabase.opened] may be useful when you want to use the same
   /// underlying [CommonDatabase] in multiple drift connections. Drift uses this
@@ -344,7 +344,7 @@ class _WasmDelegate extends Sqlite3Delegate<CommonDatabase> {
     await super.close();
 
     if (closeUnderlyingWhenClosed) {
-      database.dispose();
+      database.close();
       await _flush();
     }
   }

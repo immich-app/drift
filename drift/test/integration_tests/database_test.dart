@@ -11,18 +11,15 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
 import '../generated/todos.dart';
-import '../test_utils/database_vm.dart';
 
 void main() {
-  preferLocalSqlite3();
-
   test('transaction handles BEGIN throwing', () async {
     final rawDb = sqlite3.open('file:transaction_test?mode=memory&cache=shared',
         uri: true);
     final driftDb = TodoDb(NativeDatabase.opened(sqlite3
         .open('file:transaction_test?mode=memory&cache=shared', uri: true)));
     addTearDown(driftDb.close);
-    addTearDown(rawDb.dispose);
+    addTearDown(rawDb.close);
 
     await driftDb
         .into(driftDb.categories)
@@ -47,7 +44,7 @@ void main() {
     // Make sure this doesn't block the database
     await expectLater(
         driftDb.select(driftDb.categories).get(), completion(hasLength(1)));
-  });
+  }, skip: 'Test requires deprecated shared cache');
 
   test('DatabaseConnection constructor can wrap inner', () async {
     final raw = NativeDatabase.memory();

@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS open_connections(
   void markOpened(String path, Database openedDb) {
     final stmt = _db.prepare('INSERT INTO open_connections VALUES (?, ?)');
     stmt.execute([openedDb.handle.address, path]);
-    stmt.dispose();
+    stmt.close();
   }
 
   /// Marks the database [db] as closed.
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS open_connections(
 
       for (final row in results) {
         final ptr = Pointer.fromAddress(row.columnAt(0) as int);
-        sqlite3.fromPointer(ptr).dispose();
+        sqlite3.fromPointer(ptr).close();
       }
 
       _db.execute('DELETE FROM open_connections;');

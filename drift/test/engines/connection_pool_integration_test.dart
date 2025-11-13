@@ -10,7 +10,6 @@ import 'package:path/path.dart' show join;
 import 'package:test/test.dart';
 
 import '../generated/todos.dart';
-import '../test_utils/database_vm.dart';
 
 String fileName = 'drift-wal-integration-test.db';
 final _file = File(join(Directory.systemTemp.path, fileName));
@@ -22,8 +21,6 @@ DatabaseConnection _forBackgroundIsolate() {
 }
 
 void main() {
-  preferLocalSqlite3();
-
   setUp(() async {
     if (await _file.exists()) {
       await _file.delete();

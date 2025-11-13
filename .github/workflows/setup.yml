@@ -6,43 +6,6 @@ on:
         value: ${{ jobs.dart_dependencies.outputs.flutter_version }}
 
 jobs:
-  # Compile the latest sqlite3 library, which will be used to run tests in drift
-  # and sqlparser
-  compile_sqlite3:
-    strategy:
-      matrix:
-        # We only really need this for Ubuntu, but we recommend users run the same
-        # steps so we better make sure they work on all platforms.
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    name: "Compile sqlite3 for tests"
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        id: cache_build
-        with:
-          path: drift/.dart_tool/sqlite3/
-          key: ${{ runner.os }}-${{ hashFiles('drift/tool/') }}
-      - name: Download Dart
-        if: steps.cache_build.outputs.cache-hit != 'true'
-        uses: dart-lang/setup-dart@v1
-      - name: Compile sqlite3
-        if: steps.cache_build.outputs.cache-hit != 'true'
-        run: |
-          dart pub global activate melos
-          dart pub get
-          melos bootstrap --scope drift
-          dart run drift/tool/download_sqlite3.dart
-      - name: Upload built sqlite3 binaries
-        uses: actions/upload-artifact@v4
-        # we only need these artifacts on Linux since we run unit tests on Linux only
-        if: runner.os == 'Linux'
-        with:
-          name: sqlite3
-          path: drift/.dart_tool/sqlite3/
-          if-no-files-found: error
-          retention-days: 1
-
   dart_dependencies:
     name: Get and cache Dart dependencies
     runs-on: ubuntu-latest

@@ -77,7 +77,7 @@ Future<void> main() async {
 
     expect(stmt.select().single['id'], 1);
 
-    db.dispose();
+    db.close();
   });
 
   test('isolates integration test', () async {

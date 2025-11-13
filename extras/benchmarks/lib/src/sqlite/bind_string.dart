@@ -29,7 +29,7 @@ class SelectStringBenchmark extends BenchmarkBase {
 
   @override
   void teardown() {
-    statement.dispose();
-    database.dispose();
+    statement.close();
+    database.close();
   }
 }

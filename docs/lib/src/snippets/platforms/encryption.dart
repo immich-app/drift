@@ -1,18 +1,6 @@
 import 'dart:io';
 import 'package:drift/native.dart';
-import 'package:drift_website/src/snippets/isolates.dart';
 import 'package:sqlite3/sqlite3.dart';
-
-// #docregion setup
-import 'package:sqlite3/open.dart';
-import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
-
-// call this method before using drift
-Future<void> setupSqlCipher() async {
-  await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
-  open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
-}
-// #enddocregion setup
 
 // #docregion check_cipher
 bool _debugCheckHasCipher(Database database) {
@@ -24,13 +12,8 @@ void databases() {
   final myDatabaseFile = File('/dev/null');
 
   // #docregion encrypted1
-  final token = RootIsolateToken.instance!;
   NativeDatabase.createInBackground(
     myDatabaseFile,
-    isolateSetup: () async {
-      BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-      await setupSqlCipher();
-    },
     setup: (rawDb) {
       rawDb.execute("PRAGMA key = 'passphrase';");
 
@@ -43,10 +26,6 @@ void databases() {
   // #docregion encrypted2
   NativeDatabase.createInBackground(
     myDatabaseFile,
-    isolateSetup: () async {
-      BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-      await setupSqlCipher();
-    },
     setup: (rawDb) {
       assert(_debugCheckHasCipher(rawDb));
       rawDb.execute("PRAGMA key = 'passphrase';");
@@ -70,9 +49,6 @@ void databases() {
   NativeDatabase.createInBackground(
     File(encryptedDatabasePath),
     isolateSetup: () async {
-      BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-      await setupSqlCipher();
-
       final existing = File(existingDatabasePath);
       final encrypted = File(encryptedDatabasePath);
 
@@ -93,7 +69,7 @@ void databases() {
         plaintextDb
           ..execute('PRAGMA encrypted.user_version = $userVersion;')
           ..execute('DETACH DATABASE encrypted;')
-          ..dispose();
+          ..close();
 
         // This should have created the encrypted database.
         assert(await encrypted.exists());

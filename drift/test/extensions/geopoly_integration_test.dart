@@ -7,13 +7,9 @@ import 'package:drift/extensions/geopoly.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
-import '../test_utils/database_vm.dart';
-
 part 'geopoly_integration_test.g.dart';
 
 void main() {
-  preferLocalSqlite3();
-
   test(
     'can access geopoly types',
     () async {
@@ -38,7 +34,7 @@ bool _canUseGeopoly() {
   final db = sqlite3.openInMemory();
   final result = db
       .select('SELECT sqlite_compileoption_used(?)', ['ENABLE_GEOPOLY']).single;
-  db.dispose();
+  db.close();
   return result.values[0] == 1;
 }
 

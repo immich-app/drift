@@ -36,7 +36,7 @@ void main() {
         .map(utf8.decode)
         .transform(const LineSplitter())
         .listen((line) {
-      if (line.startsWith('The Dart VM service is listening')) {
+      if (line.contains('The Dart VM service is listening')) {
         vmServiceListening.complete();
       } else if (line == 'database created') {
         databaseOpened.complete();

@@ -408,17 +408,17 @@ final class WebProtocol {
     return ErrorResponse(
       _int(requestId),
       SqliteException(
-        _int(extendedResultCode),
-        (message as JSString).toDart,
-        _decodeNullableString(explanation),
-        _decodeNullableString(causingStatement),
-        parametersToStatement.isDefinedAndNotNull
+        extendedResultCode: _int(extendedResultCode),
+        message: (message as JSString).toDart,
+        explanation: _decodeNullableString(explanation),
+        causingStatement: _decodeNullableString(causingStatement),
+        parametersToStatement: parametersToStatement.isDefinedAndNotNull
             ? [
                 for (final raw in (parametersToStatement as JSArray).toDart)
                   _decodeDbValue(raw),
               ]
             : null,
-        _decodeNullableString(operation),
+        operation: _decodeNullableString(operation),
       ),
       _decodeStackStrace(stackTrace),
     );

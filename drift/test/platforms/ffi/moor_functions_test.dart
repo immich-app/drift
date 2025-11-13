@@ -7,20 +7,16 @@ import 'package:drift/src/sqlite3/native_functions.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
-import '../../test_utils/database_vm.dart';
-
 void main() {
-  preferLocalSqlite3();
-
   late Database db;
 
   setUp(() => db = sqlite3.openInMemory()..useNativeFunctions());
-  tearDown(() => db.dispose());
+  tearDown(() => db.close());
 
   dynamic selectSingle(String expression) {
     final stmt = db.prepare('SELECT $expression AS r;');
     final rows = stmt.select();
-    stmt.dispose();
+    stmt.close();
 
     return rows.single['r'];
   }
@@ -130,7 +126,7 @@ void main() {
       expect(stmt.select(['foo', null]).single.columnAt(0), isNull);
       expect(stmt.select([null, 'foo']).single.columnAt(0), isNull);
 
-      stmt.dispose();
+      stmt.close();
     });
   });
 

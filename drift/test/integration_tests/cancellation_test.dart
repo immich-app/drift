@@ -10,11 +10,9 @@ import 'package:drift/native.dart';
 import 'package:test/test.dart';
 
 import '../generated/todos.dart';
-import '../test_utils/database_vm.dart';
 import 'cancellation_test_support.dart';
 
 void main() {
-  preferLocalSqlite3();
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
   Future<void> runTest(EmptyDb db) async {

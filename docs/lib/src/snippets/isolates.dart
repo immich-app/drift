@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:isolate';
+import 'package:flutter/services.dart';
 
 import 'package:drift/drift.dart';
 // #docregion isolate
@@ -20,16 +21,6 @@ QueryExecutor _openConnection() {
 class SomeTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get content => text()();
-}
-
-// Copying the definitions here because we can't import Flutter in documentation
-// snippets.
-class RootIsolateToken {
-  static RootIsolateToken? instance;
-}
-
-class BackgroundIsolateBinaryMessenger {
-  static void ensureInitialized(RootIsolateToken token) {}
 }
 
 // #docregion isolate, database-definition

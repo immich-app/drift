@@ -10,11 +10,8 @@ import 'package:test/test.dart';
 
 import '../generated/custom_tables.dart';
 import '../generated/todos.dart';
-import '../test_utils/database_vm.dart';
 
 void main() {
-  preferLocalSqlite3();
-
   test('change column types', () async {
     // Create todos table with category as text (it's an int? in Dart).
     final executor = NativeDatabase.memory(setup: (db) {
@@ -469,7 +466,7 @@ void main() {
     // so we better make sure this keeps working.
     final underlying = sqlite3.openInMemory()
       ..execute('pragma user_version = 1;');
-    addTearDown(underlying.dispose);
+    addTearDown(underlying.close);
 
     const maxSchema = 10;
     final expectedException = Exception('schema upgrade!');
@@ -508,7 +505,7 @@ void main() {
   test('step-by-step migrations saves state halfway', () async {
     final underlying = sqlite3.openInMemory()
       ..execute('pragma user_version = 1;');
-    addTearDown(underlying.dispose);
+    addTearDown(underlying.close);
 
     final expectedException = Exception('schema upgrade!');
 

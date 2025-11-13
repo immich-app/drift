@@ -6,11 +6,7 @@ import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
 import 'package:test/test.dart';
 
-import '../test_utils/database_vm.dart';
-
 void main() {
-  preferLocalSqlite3();
-
   group('a failing commit does not block the whole database', () {
     Future<void> testWith(QueryExecutor executor) async {
       final db = _Database(executor);

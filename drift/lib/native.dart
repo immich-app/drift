@@ -283,7 +283,7 @@ class NativeDatabase extends DelegatedDatabase {
   ///
   /// When the [closeUnderlyingOnClose] argument is set (which is the default),
   /// calling [QueryExecutor.close] on the returned [NativeDatabase] will also
-  /// [CommonDatabase.dispose] the [database] passed to this constructor.
+  /// [CommonDatabase.close] the [database] passed to this constructor.
   ///
   /// Using [NativeDatabase.opened] may be useful when you want to use the same
   /// underlying [Database] in multiple drift connections. Drift uses this
@@ -452,7 +452,7 @@ class _NativeDelegate extends Sqlite3Delegate<Database> {
         // ignore
       }
 
-      database.dispose();
+      database.close();
     }
   }
 

@@ -7,15 +7,12 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
 import '../../generated/todos.dart';
-import '../../test_utils/database_vm.dart';
 
 void main() {
-  preferLocalSqlite3();
-
   test("lru/mru order and remove callback", () {
     final cache = PreparedStatementsCache(maxSize: 3);
     final database = sqlite3.openInMemory();
-    addTearDown(database.dispose);
+    addTearDown(database.close);
 
     expect(cache.use('SELECT 1'), isNull);
     cache.addNew('SELECT 1', database.prepare('SELECT 1'));

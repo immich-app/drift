@@ -18,22 +18,6 @@ runs:
         cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
         cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
 
-    # Setup sqlite3
-    - name: Download sqlite3
-      uses: actions/download-artifact@v4
-      with:
-        name: sqlite3
-        path: drift/.dart_tool/sqlite3/
-    - name: Use downloaded sqlite3
-      shell: bash
-      run: |
-        chmod a+x drift/.dart_tool/sqlite3/latest/sqlite3
-        echo $(realpath drift/.dart_tool/sqlite3/latest) >> $GITHUB_PATH
-        echo "LD_LIBRARY_PATH=$(realpath drift/.dart_tool/sqlite3/latest)" >> $GITHUB_ENV
-    - name: Check sqlite3 version
-      run: sqlite3 --version
-      shell: bash
-
     # Setup Dart packages
     - uses: actions/cache@v4
       with:

@@ -6,7 +6,6 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:test/test.dart';
 
 import '../../generated/todos.dart';
-import '../../test_utils/database_vm.dart';
 
 void _setup(Database db) {
   db.createFunction(
@@ -16,8 +15,6 @@ void _setup(Database db) {
 }
 
 void main() {
-  preferLocalSqlite3();
-
   test('can use a custom setup function', () async {
     final executor = NativeDatabase.memory(setup: _setup);
 
